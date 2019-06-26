@@ -26,7 +26,7 @@ public class CTGui extends PApplet {
 	// Serial ID is optional and added by Eclipse
 	@Override
 	public void setup() {
-		size(900, 600, P3D);
+		size(1000, 600, P3D);
 		if (frame != null) {
 			frame.setResizable(true);
 		}
@@ -146,6 +146,23 @@ public class CTGui extends PApplet {
 	  println("trajectoryList - GTextArea >> GEvent." + event + " @ " + millis());
 	} //_CODE_:trajectoryList:490883:
 
+	public void button1_click3(GButton source, GEvent event) { //_CODE_:pickPathStart:960893:
+	  println("pickPathStart - GButton >> GEvent." + event + " @ " + millis());
+	  new DatePickerSample();
+	} //_CODE_:pickPathStart:960893:
+
+	public void button2_click3(GButton source, GEvent event) { //_CODE_:pickPathEnd:503254:
+	  println("pickPathEnd - GButton >> GEvent." + event + " @ " + millis());
+	} //_CODE_:pickPathEnd:503254:
+
+	public void button3_click2(GButton source, GEvent event) { //_CODE_:pckStStart:276985:
+	  println("pckStStart - GButton >> GEvent." + event + " @ " + millis());
+	} //_CODE_:pckStStart:276985:
+
+	public void button4_click2(GButton source, GEvent event) { //_CODE_:pckStEnd:578735:
+	  println("pckStEnd - GButton >> GEvent." + event + " @ " + millis());
+	} //_CODE_:pckStEnd:578735:
+
 
 
 	// Create all the GUI controls. 
@@ -219,6 +236,18 @@ public class CTGui extends PApplet {
 	  trajectoryList = new GTextArea(this, 8, 507, 589, 80, G4P.SCROLLBARS_NONE);
 	  trajectoryList.setOpaque(true);
 	  trajectoryList.addEventHandler(this, "textarea1_change1");
+	  pickPathStart = new GButton(this, 886, 160, 80, 30);
+	  pickPathStart.setText("Pick Date");
+	  pickPathStart.addEventHandler(this, "button1_click3");
+	  pickPathEnd = new GButton(this, 886, 206, 80, 30);
+	  pickPathEnd.setText("Pick Date");
+	  pickPathEnd.addEventHandler(this, "button2_click3");
+	  pckStStart = new GButton(this, 888, 410, 80, 30);
+	  pckStStart.setText("Pick Date");
+	  pckStStart.addEventHandler(this, "button3_click2");
+	  pckStEnd = new GButton(this, 888, 460, 80, 30);
+	  pckStEnd.setText("Pick Date");
+	  pckStEnd.addEventHandler(this, "button4_click2");
 	}
 
 	// Variable declarations 
@@ -244,5 +273,8 @@ public class CTGui extends PApplet {
 	GTextField stEnd; 
 	GButton stSearch; 
 	GTextArea trajectoryList; 
-
+	GButton pickPathStart; 
+	GButton pickPathEnd; 
+	GButton pckStStart; 
+	GButton pckStEnd; 
 }
