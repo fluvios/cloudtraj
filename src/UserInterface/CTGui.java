@@ -4,6 +4,9 @@ import processing.core.PApplet;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import bdss.preprocessing.Parse;
@@ -74,6 +77,24 @@ public class CTGui extends PApplet {
 				MapUtils.createDefaultEventDispatcher(this, map);
 			}
 		}
+	}
+	
+	public String toUnixTimestamp(String date) {
+		
+		return date;
+	}
+	
+	public String toDate(String date) {
+		DateTimeFormatter formatter = 
+				DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+		String formattedDtm = Instant.ofEpochSecond(Long.parseLong(date))
+				.atZone(ZoneId.of("GMT+1"))
+				.format(formatter);
+
+		System.out.println(formattedDtm);   // => '2013-06-27 09:31:00'
+		
+		return formattedDtm;
 	}
 
 	/* =========================================================
@@ -148,7 +169,7 @@ public class CTGui extends PApplet {
 
 	public void button1_click3(GButton source, GEvent event) { //_CODE_:pickPathStart:960893:
 	  println("pickPathStart - GButton >> GEvent." + event + " @ " + millis());
-	  new DatePickerSample();
+	  println("Start Time Path");
 	} //_CODE_:pickPathStart:960893:
 
 	public void button2_click3(GButton source, GEvent event) { //_CODE_:pickPathEnd:503254:
@@ -188,9 +209,9 @@ public class CTGui extends PApplet {
 	  label1 = new GLabel(this, 605, 86, 80, 20);
 	  label1.setText("Path Query");
 	  label1.setOpaque(false);
-//	  taxiList = new GDropList(this, 714, 126, 90, 80, 3);
-//	  taxiList.setItems(loadStrings("list_640156"), 0);
-//	  taxiList.addEventHandler(this, "dropList1_click1");
+	  taxiList = new GDropList(this, 714, 126, 90, 80, 3);
+	  taxiList.setItems(db.taxiIdList(), 0);
+	  taxiList.addEventHandler(this, "dropList1_click1");
 	  label2 = new GLabel(this, 606, 126, 80, 20);
 	  label2.setText("Taxi Id");
 	  label2.setOpaque(false);

@@ -1,7 +1,10 @@
 package bdss.trajdb;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.table.CloudTable;
@@ -116,5 +119,25 @@ public class Database {
 	
 	public void stQuery(String regionId,String startDate,String endDate) {
 		
+	}
+	
+	public String[] taxiIdList() {
+    	List<String> tempTaxiId = new ArrayList<String>();
+    			
+	    // Specify a range query, using "Smith" as the partition key,
+	    // with the row key being up to the letter "E".
+	    TableQuery<Trip> rangeQuery =
+	        TableQuery.from(Trip.class);
+
+	    // Loop through the results, displaying information about the entity
+	    for (Trip entity : cloudTable.execute(rangeQuery)) {
+	    	String taxiId = entity.getPartitionKey().replace("\"", "");
+	    	tempTaxiId.add(taxiId);
+	    }
+	    
+	    List<String> newTaxiId = tempTaxiId.stream().distinct()
+	    		.collect(Collectors.toList()); 
+	    
+	    return newTaxiId.toArray(new String[newTaxiId.size()]);
 	}
 }

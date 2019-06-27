@@ -16,6 +16,9 @@ public class Trip extends TableServiceEntity {
 	private boolean MISSING_DATA;
 	private String POLYLINE;
 	
+	public Trip() {
+		
+	}
 	
 	public Trip(String tRIP_ID, int tAXI_ID, int tIMESTAMP, char dAY_TYPE, boolean mISSING_DATA,
 			String pOLYLINE) {
