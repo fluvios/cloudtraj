@@ -29,7 +29,7 @@ public class CTGui extends PApplet {
 	// Serial ID is optional and added by Eclipse
 	@Override
 	public void setup() {
-		size(1000, 600, P3D);
+		size(900, 600, P3D);
 		if (frame != null) {
 			frame.setResizable(true);
 		}
@@ -127,10 +127,6 @@ public class CTGui extends PApplet {
 	  println("clearButton - GButton >> GEvent." + event + " @ " + millis());
 	} //_CODE_:clearButton:472670:
 
-	public void dropList1_click1(GDropList source, GEvent event) { //_CODE_:taxiList:640156:
-	  println("taxiList - GDropList >> GEvent." + event + " @ " + millis());
-	} //_CODE_:taxiList:640156:
-
 	public void textfield2_change1(GTextField source, GEvent event) { //_CODE_:pathStart:294212:
 	  println("textfield2 - GTextField >> GEvent." + event + " @ " + millis());
 	} //_CODE_:pathStart:294212:
@@ -141,6 +137,10 @@ public class CTGui extends PApplet {
 
 	public void button1_click2(GButton source, GEvent event) { //_CODE_:pathSearch:662089:
 	  println("button1 - GButton >> GEvent." + event + " @ " + millis());
+	  db.taxiIdList(taxiId.getText());
+	  map = new UnfoldingMap(this, 20, 86, 570, 400, new OpenStreetMapProvider());
+	  map.zoomAndPanTo(12, new Location(41.1491,-8.6107));
+	  MapUtils.createDefaultEventDispatcher(this, map);
 	} //_CODE_:pathSearch:662089:
 
 	public void button2_click2(GButton source, GEvent event) { //_CODE_:regionSelect:563953:
@@ -167,22 +167,9 @@ public class CTGui extends PApplet {
 	  println("trajectoryList - GTextArea >> GEvent." + event + " @ " + millis());
 	} //_CODE_:trajectoryList:490883:
 
-	public void button1_click3(GButton source, GEvent event) { //_CODE_:pickPathStart:960893:
-	  println("pickPathStart - GButton >> GEvent." + event + " @ " + millis());
-	  println("Start Time Path");
-	} //_CODE_:pickPathStart:960893:
-
-	public void button2_click3(GButton source, GEvent event) { //_CODE_:pickPathEnd:503254:
-	  println("pickPathEnd - GButton >> GEvent." + event + " @ " + millis());
-	} //_CODE_:pickPathEnd:503254:
-
-	public void button3_click2(GButton source, GEvent event) { //_CODE_:pckStStart:276985:
-	  println("pckStStart - GButton >> GEvent." + event + " @ " + millis());
-	} //_CODE_:pckStStart:276985:
-
-	public void button4_click2(GButton source, GEvent event) { //_CODE_:pckStEnd:578735:
-	  println("pckStEnd - GButton >> GEvent." + event + " @ " + millis());
-	} //_CODE_:pckStEnd:578735:
+	public void textfield1_change2(GTextField source, GEvent event) { //_CODE_:taxiId:948204:
+	  println("taxiId - GTextField >> GEvent." + event + " @ " + millis());
+	} //_CODE_:taxiId:948204:
 
 
 
@@ -208,10 +195,8 @@ public class CTGui extends PApplet {
 	  clearButton.addEventHandler(this, "button2_click1");
 	  label1 = new GLabel(this, 605, 86, 80, 20);
 	  label1.setText("Path Query");
+	  label1.setTextBold();
 	  label1.setOpaque(false);
-	  taxiList = new GDropList(this, 714, 126, 90, 80, 3);
-	  taxiList.setItems(db.taxiIdList(), 0);
-	  taxiList.addEventHandler(this, "dropList1_click1");
 	  label2 = new GLabel(this, 606, 126, 80, 20);
 	  label2.setText("Taxi Id");
 	  label2.setOpaque(false);
@@ -230,8 +215,9 @@ public class CTGui extends PApplet {
 	  pathSearch = new GButton(this, 795, 258, 80, 30);
 	  pathSearch.setText("Search");
 	  pathSearch.addEventHandler(this, "button1_click2");
-	  label5 = new GLabel(this, 601, 317, 127, 24);
+	  label5 = new GLabel(this, 601, 317, 130, 24);
 	  label5.setText("Spatio-Temporal Query");
+	  label5.setTextBold();
 	  label5.setOpaque(false);
 	  regionSelect = new GButton(this, 603, 359, 80, 30);
 	  regionSelect.setText("Region");
@@ -257,18 +243,9 @@ public class CTGui extends PApplet {
 	  trajectoryList = new GTextArea(this, 8, 507, 589, 80, G4P.SCROLLBARS_NONE);
 	  trajectoryList.setOpaque(true);
 	  trajectoryList.addEventHandler(this, "textarea1_change1");
-	  pickPathStart = new GButton(this, 886, 160, 80, 30);
-	  pickPathStart.setText("Pick Date");
-	  pickPathStart.addEventHandler(this, "button1_click3");
-	  pickPathEnd = new GButton(this, 886, 206, 80, 30);
-	  pickPathEnd.setText("Pick Date");
-	  pickPathEnd.addEventHandler(this, "button2_click3");
-	  pckStStart = new GButton(this, 888, 410, 80, 30);
-	  pckStStart.setText("Pick Date");
-	  pckStStart.addEventHandler(this, "button3_click2");
-	  pckStEnd = new GButton(this, 888, 460, 80, 30);
-	  pckStEnd.setText("Pick Date");
-	  pckStEnd.addEventHandler(this, "button4_click2");
+	  taxiId = new GTextField(this, 712, 121, 160, 30, G4P.SCROLLBARS_NONE);
+	  taxiId.setOpaque(true);
+	  taxiId.addEventHandler(this, "textfield1_change2");
 	}
 
 	// Variable declarations 
@@ -278,7 +255,6 @@ public class CTGui extends PApplet {
 	GButton loadButton; 
 	GButton clearButton; 
 	GLabel label1; 
-	GDropList taxiList; 
 	GLabel label2; 
 	GLabel label3; 
 	GLabel label4; 
@@ -294,8 +270,5 @@ public class CTGui extends PApplet {
 	GTextField stEnd; 
 	GButton stSearch; 
 	GTextArea trajectoryList; 
-	GButton pickPathStart; 
-	GButton pickPathEnd; 
-	GButton pckStStart; 
-	GButton pckStEnd; 
+	GTextField taxiId; 
 }

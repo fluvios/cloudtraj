@@ -97,6 +97,8 @@ public class Database {
 		    // Combine the two conditions into a filter expression.
 		    String combinedFilter = TableQuery.combineFilters(startFilter,
 		        Operators.AND, endFilter);
+		    combinedFilter = TableQuery.combineFilters(combinedFilter, 
+		    		Operators.AND, partitionFilter);
 
 		    // Specify a range query, using "Smith" as the partition key,
 		    // with the row key being up to the letter "E".
@@ -121,23 +123,31 @@ public class Database {
 		
 	}
 	
-	public String[] taxiIdList() {
+	public void taxiIdList(String taxiId) {
     	List<String> tempTaxiId = new ArrayList<String>();
     			
-	    // Specify a range query, using "Smith" as the partition key,
-	    // with the row key being up to the letter "E".
+	    // Define constants for filters.
+	    final String ROW_KEY = "RowKey";
+
+	    // Create a filter condition where the partition key is "Smith".
+	    String partitionFilter = TableQuery.generateFilterCondition(
+	    		ROW_KEY,
+	        QueryComparisons.EQUAL,
+	        taxiId);
+	    
+    	// with the row key being up to the letter "E".
 	    TableQuery<Trip> rangeQuery =
-	        TableQuery.from(Trip.class);
+	        TableQuery.from(Trip.class).where(partitionFilter);
 
 	    // Loop through the results, displaying information about the entity
+	    int i = 1;
 	    for (Trip entity : cloudTable.execute(rangeQuery)) {
-	    	String taxiId = entity.getPartitionKey().replace("\"", "");
-	    	tempTaxiId.add(taxiId);
+	    	System.out.println("Trip "+ i);
+//	    	String[] latlon = entity.getPOLYLINE().split(",");
+//	    	for (String temp : latlon) {
+//				System.out.println(temp);
+//			}
+	    	i++;
 	    }
-	    
-	    List<String> newTaxiId = tempTaxiId.stream().distinct()
-	    		.collect(Collectors.toList()); 
-	    
-	    return newTaxiId.toArray(new String[newTaxiId.size()]);
 	}
 }

@@ -47,7 +47,9 @@ public class Parse {
 //			System.out.println(latlon);
 //		}
 
-		Trip t = new Trip(traj[4], traj[5], traj[8]);
+		Trip t = new Trip(traj[4].replace("\"", ""), 
+				traj[5].replace("\"", ""), 
+				traj[8].replace("\"", "").replace("[[", "[").replace("]]", "]"));
 		tempTrajectory.add(t);
 	}
 
